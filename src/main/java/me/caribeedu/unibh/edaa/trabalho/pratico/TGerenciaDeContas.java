@@ -9,15 +9,25 @@ package me.caribeedu.unibh.edaa.trabalho.pratico;
  * @author Edu
  */
 public class TGerenciaDeContas {
-    public TGerenciaDeContas() {
-        Contas = new TContaBancaria[0];
+    private static TContaBancaria[] CONTAS = new TContaBancaria[0];
+    
+    public static String obterResumoContas() {
+        String resumoContas = "";
+        
+        for (TContaBancaria conta : CONTAS)
+            resumoContas += String.format(
+                    "Nome do cliente: %s - Nro. da Conta: %s - Agência: %s\n", 
+                    conta.obterNomeCliente(),
+                    conta.obterNroConta(),
+                    conta.obterNroAgencia()
+            );
+        
+        return resumoContas;
     }
     
-    private static TContaBancaria[] Contas;
-    
-    private static Boolean contaExiste(String nroConta) {
-        for (TContaBancaria contaExistente : Contas) {
-            if (contaExistente.obterNroConta().equals(nroConta))
+    private static Boolean contaExiste(String nroConta, String agencia) {
+        for (TContaBancaria contaExistente : CONTAS) {
+            if (contaExistente.obterNroConta().equals(nroConta) && contaExistente.obterNroAgencia().equals(agencia))
                 return true;
         }
         
@@ -28,38 +38,55 @@ public class TGerenciaDeContas {
         final int menorNumero = 1;
         final int maiorNumero = 999;
         
-        final int numeroPossivel = (int)(Math.random()*(maiorNumero - menorNumero + 1) + menorNumero);
+        final int numeroPossivel = Utilitarios.GerarNumeroAleatorio(menorNumero, maiorNumero);
         final String novoNroContaGerado = String.format("%03d", numeroPossivel);
         
-        if (TGerenciaDeContas.contaExiste(novoNroContaGerado))
-            return gerarNovoNroConta();
-        else
-            return novoNroContaGerado;
+        return novoNroContaGerado;
     }
     
-    public static void novoCliente(String nome, String cpf) {
-        int tamanhoListaContas = TGerenciaDeContas.Contas.length;
+    private static String gerarNovoNroAgencia(String novoNroConta) {
+        final int menorNumero = 1;
+        final int maiorNumero = 9999;
+        
+        final int numeroPossivel = Utilitarios.GerarNumeroAleatorio(menorNumero, maiorNumero);
+        final String novoNroAgenciaGerado = String.format("%04d", numeroPossivel);
+        
+        if (TGerenciaDeContas.contaExiste(novoNroConta, novoNroAgenciaGerado))
+            return gerarNovoNroAgencia(novoNroConta);
+        else
+            return novoNroAgenciaGerado;
+    }
+    
+    public static TContaBancaria novoCliente(String nome, String cpf) {
+        int tamanhoListaContas = TGerenciaDeContas.CONTAS.length;
                 
         var listaContasAtualizada = new TContaBancaria[tamanhoListaContas + 1];
         
         // Move as contas já cadastradas para uma nova lista maior
-        System.arraycopy(TGerenciaDeContas.Contas, 0, listaContasAtualizada, 0, tamanhoListaContas);
-                
-        TContaBancaria novaConta = new TContaBancaria(TGerenciaDeContas.gerarNovoNroConta(), nome, cpf);
+        System.arraycopy(TGerenciaDeContas.CONTAS, 0, listaContasAtualizada, 0, tamanhoListaContas);
+        
+        String novoNroConta = TGerenciaDeContas.gerarNovoNroConta();
+        String novoNroAgencia = TGerenciaDeContas.gerarNovoNroAgencia(novoNroConta);
+        
+        TContaBancaria novaConta = new TContaBancaria(novoNroConta, novoNroAgencia, nome, cpf);
         
         listaContasAtualizada[tamanhoListaContas] = novaConta;
+        
+        TGerenciaDeContas.CONTAS = listaContasAtualizada;
+        
+        return novaConta;
     }
     
-    public static TResultadoOperacao transferir(String nroContaOrigem, String nroContaDestino, double valor) {
+    public static TResultadoOperacao transferir(String nroContaOrigem, String agenciaContaOrigem, String nroContaDestino, String agenciaContaDestino, double valor) {
         if (valor < 0)
             return new TResultadoOperacao(false, "O valor inserido para transferência é inválido. Tente novamente.");
         
-        TContaBancaria contaOrigem = TGerenciaDeContas.obterContaCliente(nroContaOrigem);
+        TContaBancaria contaOrigem = TGerenciaDeContas.obterContaCliente(nroContaOrigem, agenciaContaOrigem);
         
         if (!contaOrigem.valorEstaDisponivel(valor))
             return new TResultadoOperacao(false, "Você não tem saldo suficiente.");
                 
-        TContaBancaria contaDestino = TGerenciaDeContas.obterContaCliente(nroContaDestino);
+        TContaBancaria contaDestino = TGerenciaDeContas.obterContaCliente(nroContaDestino, agenciaContaDestino);
         
         if (contaDestino == null)
             return new TResultadoOperacao(false, "A conta de destino da transferência não existe. Tente novamente.");
@@ -73,12 +100,16 @@ public class TGerenciaDeContas {
         );
     }
     
-    private static TContaBancaria obterContaCliente(String nroConta) {        
-        for (TContaBancaria conta : Contas) {
-            if (conta.obterNroConta().equals(nroConta))
+    public static TContaBancaria obterContaCliente(String nroConta, String nroAgencia) {        
+        for (TContaBancaria conta : CONTAS) {
+            if (conta.obterNroConta().equals(nroConta) && conta.obterNroAgencia().equals(nroAgencia))
                 return conta;
         }
         
         return null;
+    }
+    
+    public static int obterQuantidadeContas() {        
+        return CONTAS.length;
     }
 }

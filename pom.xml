@@ -9,6 +9,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>18</maven.compiler.source>
         <maven.compiler.target>18</maven.compiler.target>
-        <exec.mainClass>me.caribeedu.me.caribeedu.unibh.edaa.trabalho.pratico.MeCaribeeduUnibhEdaaTrabalhoPratico</exec.mainClass>
+        <exec.mainClass>me.caribeedu.unibh.edaa.trabalho.pratico.TCaixa</exec.mainClass>
     </properties>
 </project>
