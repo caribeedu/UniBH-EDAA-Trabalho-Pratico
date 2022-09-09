@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Project/Maven2/JavaApp/src/main/java/${packagePath}/${mainClassName}.java to edit this template
  */
 
-package me.caribeedu.me.caribeedu.unibh.edaa.trabalho.pratico;
+package me.caribeedu.unibh.edaa.trabalho.pratico;
 
 import java.io.IOException;
 import java.util.Scanner;
