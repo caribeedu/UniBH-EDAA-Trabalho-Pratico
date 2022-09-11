@@ -11,16 +11,33 @@ package me.caribeedu.unibh.edaa.trabalho.pratico;
 public class TGerenciaDeContas {
     private static TContaBancaria[] CONTAS = new TContaBancaria[0];
     
-    public static String obterResumoContas() {
+    public static String obterContasDisponiveis() {
         String resumoContas = "";
         
         for (TContaBancaria conta : CONTAS)
             resumoContas += String.format(
-                    "Nome do cliente: %s - Nro. da Conta: %s - Agência: %s\n", 
+                    "Cliente: %s - CPF: %s - Nro. da Conta: %s - Agência: %s\n",
                     conta.obterNomeCliente(),
+                    conta.obterCpfCliente(),
                     conta.obterNroConta(),
                     conta.obterNroAgencia()
             );
+        
+        return resumoContas;
+    }
+    
+    public static String obterContasTransferencia(String nroContaOrigem, String nroAgenciaOrigem) {
+        String resumoContas = "";
+        
+        for (TContaBancaria conta : CONTAS)
+            if (!conta.obterNroConta().equals(nroContaOrigem) && !conta.obterNroAgencia().equals(nroAgenciaOrigem))
+                resumoContas += String.format(
+                        "Cliente: %s - CPF: %s - Nro. da Conta: %s - Agência: %s\n",
+                        conta.obterNomeCliente(),
+                        conta.obterCpfCliente(),
+                        conta.obterNroConta(),
+                        conta.obterNroAgencia()
+                );
         
         return resumoContas;
     }

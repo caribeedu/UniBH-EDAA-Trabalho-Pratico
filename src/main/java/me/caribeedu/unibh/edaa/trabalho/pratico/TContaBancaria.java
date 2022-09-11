@@ -34,6 +34,10 @@ public class TContaBancaria {
         return NomeCliente;
     }
     
+    public String obterCpfCliente() {
+        return CpfCliente;
+    }
+    
     public String obterNroConta() {
         return NroConta;
     }

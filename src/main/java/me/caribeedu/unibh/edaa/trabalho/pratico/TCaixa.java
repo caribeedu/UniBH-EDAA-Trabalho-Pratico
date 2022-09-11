@@ -96,9 +96,9 @@ public class TCaixa {
         System.out.println("Informe os dados abaixo");        
         System.out.println("===================================");
         
-        System.out.println("Informe o nome completo: ");
+        System.out.println("Informe o nome completo:");
         String nome = Input.next();
-        System.out.println("Informe o CPF: ");
+        System.out.println("Informe o CPF:");
         String cpf = Input.next();
                 
         System.out.println();
@@ -122,7 +122,7 @@ public class TCaixa {
         System.out.println("==============DEPÓSITO=============");
         System.out.println("Informe o valor de depósito desejado");        
         System.out.println("===================================");
-        System.out.print("Valor desejado: \nR$");
+        System.out.print("Valor desejado:\nR$");
         
         double valor = Input.nextDouble();
         
@@ -138,10 +138,10 @@ public class TCaixa {
             return;
         }
         
-        System.out.println("==============SAQUE=============");
+        System.out.println("===============SAQUE==============");
         System.out.println("Informe o valor de saque desejado");        
         System.out.println("===================================");
-        System.out.print("Valor desejado: \nR$");
+        System.out.print("Valor desejado:\nR$");
         
         double valor = Input.nextDouble();
         
@@ -157,7 +157,7 @@ public class TCaixa {
             return;
         }
         
-        System.out.println("==============SALDO=============");
+        System.out.println("================SALDO==============");
         System.out.println("Confira o seu saldo abaixo");        
         System.out.println("===================================");
         System.out.println(
@@ -175,16 +175,25 @@ public class TCaixa {
         }
         
         System.out.println("===========TRANSFERÊNCIA===========");
+        
+        if (TGerenciaDeContas.obterQuantidadeContas() < 2) {
+            System.out.println("Não existem outros clientes na carteira bancária. Cadastre um novo cliente antes de continuar.");
+            return;
+        }
+        
         System.out.println("Informe a conta de destino e o valo\nr de transferência desejado");        
         System.out.println("===================================");
+                
+        System.out.println("Contas disponíveis para transferência:");
+        System.out.println(TGerenciaDeContas.obterContasTransferencia(ContaAtiva.obterNroConta(), ContaAtiva.obterNroAgencia()));
         
-        System.out.println("Número da conta de destino: ");        
+        System.out.println("Número da conta de destino:");        
         String nroContaDestino = Input.next();
         
-        System.out.println("Agência da conta de destino: ");        
+        System.out.println("Agência da conta de destino:");        
         String nroAgenciaDestino = Input.next();
         
-        System.out.print("Valor desejado: \nR$");        
+        System.out.print("Valor desejado:\nR$");        
         double valor = Input.nextDouble();
           
         TResultadoOperacao resultado = ContaAtiva.transferirValor(nroContaDestino, nroAgenciaDestino, valor);
@@ -194,13 +203,13 @@ public class TCaixa {
     }
     
     private static void selecionarConta() {
-        System.out.println("===============ENTRAR===============");        
+        System.out.println("===============ENTRAR===============");
         if (TGerenciaDeContas.obterQuantidadeContas() == 0) {
-            System.out.println("Não existem clientes na carteira bancária.");
+            System.out.println("Não existem clientes na carteira bancária. Cadastre um novo cliente antes de continuar.");
             return;
         }
         
-        System.out.println(TGerenciaDeContas.obterResumoContas());
+        System.out.println(TGerenciaDeContas.obterContasDisponiveis());
         
         System.out.println("Insira o Número da Conta:");
         String nroConta = Input.next();
@@ -215,7 +224,9 @@ public class TCaixa {
             return;
         }
         
-        ContaAtiva = conta;        
+        ContaAtiva = conta;
+        
+        System.out.println();
         System.out.println("Você entrou na conta com êxito.");
     }
         
@@ -231,8 +242,10 @@ public class TCaixa {
         
         System.out.println("===============CAIXA===============");
         
-        if (existeClienteSelecionado)
+        if (existeClienteSelecionado) {
             System.out.println(String.format("Seja bem-vindo, %s", ContaAtiva.obterNomeCliente()));
+            System.out.println(String.format("Nro. Conta: %s - Agência: %s", ContaAtiva.obterNroConta(), ContaAtiva.obterNroAgencia()));
+        }
         else 
             System.out.println("Olá, seja bem-vindo");
         
