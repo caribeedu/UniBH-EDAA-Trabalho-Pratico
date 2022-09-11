@@ -97,7 +97,7 @@ Este projeto teve sua finalização de maneira pragmática utilizando o mínimo 
 
 Este, ainda, poderia ser melhorado com pouco esforço nos seguintes aspectos:
 
-* Uma melhor organização do fluxo do caixa eletrônico, tanto no funcional funcional como técnico
+* Uma melhor organização do fluxo do caixa eletrônico, tanto no quesito funcional como técnico
 * Adição de validações nos valores inseridos pelo usuário do sistema
 
 Tendo em vista a finalidade do trabalho, onde a intenção é a implementação devida das abstrações e menor uso possível de métodos de alto nível, foi buscado utilizar apenas tipos primitivos, com laços de repetição simples, recursão e *arrays*. Deste modo, este atende seu fim nos quesitos de planejamento, orquestração e execução.
